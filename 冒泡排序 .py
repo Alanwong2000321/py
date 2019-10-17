@@ -11,3 +11,6 @@ n = int(input())
 nums = [int(x) for x in input().split()]
 nums = bubble_sort(nums)
 print(*nums)
+
+
+print()
