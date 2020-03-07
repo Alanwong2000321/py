@@ -1,0 +1,19 @@
+import java.util.*;
+
+public class test1 {
+	public static void main(String[] args) {
+        List<String> list = new ArrayList<>();
+        Scanner s = new Scanner(System.in);
+        int a = s.nextInt();
+        for (int i = 0;i<a;i++) {
+        	String b = s.next();
+        	list.add(i ,b);
+        }
+        int c = s.nextInt();
+        list.remove(c);
+        int p = list.size();
+        for(int o = 0;o<p;o++) {
+        System.out.print(list.get(o)+" ");  
+    }
+}	
+}
