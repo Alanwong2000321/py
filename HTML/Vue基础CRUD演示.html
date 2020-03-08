@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Vue</title>
+       <link href="https://cdn.bootcss.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.bootcss.com/vue/2.4.4/vue.min.js"></script>
+        <style>
+                .wrap {
+                width: 1000px;
+                margin: auto;
+              }
+              p, div {
+                margin: 15px 0;
+              }
+              p {
+                font-size: 18px;
+                font-weight: 500;
+              }
+        </style>
+    </head>
+
+	<body>
+		<div class="wrap" id="example">
+			<div class="container">
+				<h1>Vue基础CRUD演示</h1>
+				<h2>畅销书排行</h2>
+				<table class="table table-striped">
+					<thead>
+						<th>序号</th>
+						<th>书名</th>
+						<th>作者</th>
+						<th>价格</th>
+						<th>操作</th>
+					</thead>
+					<!--利用vue进行遍历-->
+					<tr v-for="(item, index) in books">
+						<td>{{1 + index}}</td>
+						<td>{{item.name}}</td>
+						<td>{{item.author}}</td>
+						<td>{{item.price}}</td>
+						<td><button class="btn btn-info" @click="edit(item)">编辑</button><button class="btn btn-danger" @click="dele(item)">删除</button></td>
+					</tr>
+				</table>
+				<p style="width: 50%; float: right;">总价：{{sum}}</p>
+			</div>
+			<div class="container">
+				<h2>添加书信息</h2>
+				<p>书名</p>
+				<div class="clearfix"><input class="col-md-12 col-lg-12 col-sm-12 col-xs-12" type="text" v-model="bookName"/></div>
+				<p>作者</p>
+				<div class="clearfix"><input class="col-md-12 col-lg-12 col-sm-12 col-xs-12" type="text" v-model="bookAuthor"/></div>
+				<p>价格</p>
+				<div class="clearfix"><input class="col-md-12 col-lg-12 col-sm-12 col-xs-12" type="text" v-model.number="bookPrice"/></div>
+				<div><button class="btn-block btn btn-primary" @click="addBook" v-if="isAdd">添加</button></div>
+				<div><button class="btn-block btn btn-primary" @click="update" v-if="!isAdd">更新数据</button></div>
+			</div>
+		</div>
+    </body>
+    <script>
+    /*第一次运行,给books一个初值,第一次运行后注释*/
+		var books = [{
+					name: "红楼梦",
+					author: "曹雪芹",
+					price: 32
+				}, {
+					name: "水浒传",
+					author: "施耐庵",
+					price: 30
+				}, {
+					name: "西游记",
+					author: "吴承恩",
+					price: 40
+				}, {
+					name: "三国演义",
+					author: "罗贯中",
+					price: 39
+				}];
+		localStorage.books = JSON.stringify(books);
+/*注释部分结束*/
+		//从localStorage中取出bookList的值
+		var bookList = JSON.parse(localStorage.books);
+		/**
+		 * 利用localStorage对数据进行保存，并把结果用vue输出
+		 */
+		var vm = new Vue({
+			el: "#example",
+			data: {
+				bookName: "",
+				bookAuthor: "",
+				bookPrice: "",
+				currentIndex: 0,
+				books: bookList,
+				isAdd: true
+			},
+			methods: {
+				dele: function (book) {
+					//利用对象查找该对象在数组中的下标，原文章中的`$remove`方法已被启用
+					var index = this.books.indexOf(book)
+    				this.books.splice(index, 1);
+    				this.updateDatabase();
+				},
+				addBook: function () {
+					var tempObj = {};
+					tempObj.name = this.bookName;
+					tempObj.author = this.bookAuthor;
+					tempObj.price = this.bookPrice;
+					this.books.push(tempObj);
+					this.bookName = "";
+					this.bookAuthor = "";
+					this.bookPrice = "";
+					this.updateDatabase();
+				},
+				edit: function (book) {
+					this.isAdd = false;
+					this.bookName = book.name;
+					this.bookAuthor = book.author;
+					this.bookPrice = book.price;
+					//寻找当前book的index
+					this.currentIndex = this.books.indexOf(book);
+				},
+				update: function (book) {
+					//因为JavaScript的限制，不能这么改。详见文档https://vuejs.org/v2/guide/list.html#Object-Change-Detection-Caveats
+					/*book.name = this.bookName;
+					book.author = this.bookAuthor;
+					book.price = this.bookPrice;*/
+					this.$set(this.books[this.currentIndex], "name", this.bookName);
+					this.$set(this.books[this.currentIndex], "author", this.bookAuthor);
+					this.$set(this.books[this.currentIndex], "price", this.bookPrice);
+					this.bookName = "";
+					this.bookAuthor = "";
+					this.bookPrice = "";
+					this.updateDatabase();
+					this.isAdd = true;
+				},
+				updateDatabase: function () {
+					localStorage.books = JSON.stringify(this.books)
+				}
+			},
+			computed: {
+				sum: function () {
+					var sum = 0;
+					for (var i = 0; i < this.books.length; i++) {
+						sum += parseInt(this.books[i].price);
+					}
+					return sum;
+				}
+			}
+		})
+    </script>
+</html>
