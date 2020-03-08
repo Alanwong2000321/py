@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<style>
+.odd {
+  background-color: #ccc;
+}
+</style>
+</head>
+<body>
+    <div id="app">
+        <div align="center">
+            姓名：<input type="text" v-model="name"/><br/><br/>
+            年龄：<input type="text" v-model="age"/><br/><br/>
+            <button @click="add">保存</button>
+        </div>
+        <br/><br/>
+        <table border="1" cellpadding="5" cellspacing="0" width="500" align="center">
+            <tr>
+            <th>#</th>
+            <th>姓名</th>
+            <th>年龄</th>
+            <th>操作</th>
+            </tr>
+
+            <tr v-for="(result,index) in data" :key="index" :class="(index % 2) == 0 ? 'odd' : '' ">
+            <td>{{index + 1}}</td>
+            <td>{{result.name}}</td>
+            <td>{{result.age}}</td>
+            <td width="100">
+                <button @click="edit(index,result.id)">编辑</button>
+                <button @click="del(index,result.id)">删除</button>
+            </td>
+            </tr>
+        </table>
+    </div>
+
+<script>
+new Vue({
+    el:app,
+  data(){
+    return {
+        name: undefined,age:undefined,
+        index: -1,
+        data:[
+          
+        ]
+    }
+  },
+  methods: {
+    edit(index,id){
+        this.index = index;
+        var record = this.data[index];
+        this.name = record.name;
+        this.age = record.age;
+    },
+    del(index,id){
+        axios.delete(`http://localhost:3000/posts/${id}`)
+          .then(res => {
+            this.data.splice(index, 1);
+          })
+    },
+    add(){
+      if (this.index < 0) {
+              
+      } else {
+        axios
+          .put(`http://localhost:3000/posts/${(this.data[this.index]).id}`, {
+            name: this.name,
+            age: this.age
+          })
+          .then(res => {
+            this.data[this.index].name = this.name
+            this.data[this.index].age = this.age
+          })
+        return
+      }
+      axios.post('http://localhost:3000/posts',{
+      name:this.name,
+      age:this.age
+      })
+      .then((res)=>{
+      this.data.push({ 
+        id: res.data.id, 
+        name: res.data.name, 
+        age: res.data.age 
+      })
+      console.log(res);
+      })
+      .catch(function(err){
+      console.log(err);
+      });
+      this.age = '';
+      this.name = '';
+      this.index = -1
+    }
+  },
+  mounted: function() {
+        axios.get('http://localhost:3000/posts')
+        .then((res)=>{
+        this.data=res.data;
+        })
+        .catch(function(err){
+        console.log(err);
+        });
+    }
+})
+</script>
+</body>
+</html>
