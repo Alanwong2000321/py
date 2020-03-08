@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+</head>
+
+<body>
+<div id="app">
+<input type="text" id="p1" v-model="a">
+<span>+</span>
+<input type="text" id="p2" v-model="b">
+<span>=</span>
+<span>{{ he }}</span>
+<button @click="add">求和</button>
+
+<script>
+    new Vue({
+        el:'#app',
+        data:{
+            he:'?',
+            a:'1',
+            b:'',
+        },
+        methods:{
+            add:function(){
+                this.he=parseFloat(this.a)+parseFloat(this.b);
+            }
+        }
+    })
+</script>
+
+</div>
+</body>
+
+</html>
