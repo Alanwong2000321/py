@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>随机数生成器</title>
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+</head>
+<style>
+#app1{
+  text-align: center;
+}
+.bianju{
+  margin: 5px;
+}
+</style>
+
+<body>
+<div id="app1">
+  <div class="bianju">
+    <span>最小值:</span>
+    <input v-model="min1">
+  </div>
+  <div class="bianju">
+      <span>最大值:</span>
+      <input v-model="max1">
+  </div>
+  <div class="bianju">
+      <span>生成数:</span>
+      <input v-model="shuliang">
+  </div>
+  <button @click='run'  class="bianju">生成</button>
+  <div class="bianju" style="color: crimson;">{{ sj }}</div>
+
+</div>
+
+<script>
+  new Vue({
+    el:'#app1',
+    data:{
+      min1:'',
+      max1:'',
+      shuliang:'',
+      sj:''
+    },
+    methods:{
+      run:function(){
+        var suiji=new Set;
+        for(let i=0;(Array.from(suiji)).length<this.shuliang;i++){
+            suiji.add(Math.floor(Math.random() * (this.max1-this.min1)+this.min1));
+        }
+        this.sj=Array.from(suiji).join(',');
+      }
+    }
+  })
+</script>
+
+</body>
