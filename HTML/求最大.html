@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>测试</title>
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" id="p1" v-model="a">
+        <span>与</span>
+        <input type="text" id="p2" v-model="b">
+        <button @click="max1">这里面最大的数是</button>
+        <span style="color:blueviolet">{{max2}}</span>
+        
+        <script>
+            new Vue({
+                el:"#app",
+                data:{
+                    max2:"结果会显示在这里",
+                    a:'',
+                    b:'',
+                },
+                methods:{
+                    max1:function(){
+                        if(parseFloat(this.a)>=parseFloat(this.b)){
+                    this.max2=this.a;
+                }
+                else if(parseFloat(this.a)<=parseFloat(this.b)){
+                    this.max2=this.b;
+                }
+                    }
+                }
+            })
+        </script>
+    </div>
+</body>
+
+</html>
