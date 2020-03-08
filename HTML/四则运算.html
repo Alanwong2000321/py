@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+</head>
+<body>
+<div id="app">
+<input type="text" id="p1" v-model="a">
+<span>+</span>
+<input type="text" id="p2" v-model="b">
+<span>=</span>
+<span>{{ he }}</span>
+<button @click="add">求和</button>
+<script>
+    new Vue({
+        el:'#app',
+        data:{
+            he:'',
+            a:'',
+            b:'',
+        },
+        methods:{
+            add:function(){
+                this.he=parseFloat(this.a)+parseFloat(this.b);
+            }
+        }
+    })
+</script>
+</div>
+<div id="bpp">
+    <input type="text" id="p3" v-model="c">
+    <span>-</span>
+    <input type="text" id="p4" v-model="d">
+    <span>=</span>
+    <span>{{ she }}</span>
+    <button @click="bdd">求差</button>
+    <script>
+        new Vue({
+            el:'#bpp',
+            data:{
+                she:'',
+                c:'',
+                d:'',
+            },
+            methods:{
+                bdd:function(){
+                    this.she=parseFloat(this.c)-parseFloat(this.d);
+                }
+            }
+        })
+    </script>  
+    </div>
+<div id="cpp">
+    <input type="text" id="p5" v-model="e">
+    <span>*</span>
+    <input type="text" id="p6" v-model="f">
+    <span>=</span>
+    <span>{{ ahe }}</span>
+    <button @click="cdd">求积</button>
+    <script>
+        new Vue({
+            el:'#cpp',
+            data:{
+                ahe:'',
+                e:'',
+                f:'',
+            },
+            methods:{
+                cdd:function(){
+                    this.ahe=parseFloat(this.e)*parseFloat(this.f);
+                }
+            }
+        })
+    </script>
+    </div>
+    <div id="dpp">
+        <input type="text" id="p7" v-model="g">
+        <span>/</span>
+        <input type="text" id="p8" v-model="h">
+        <span>=</span>
+        <span>{{ bhe }}</span>
+        <button @click="cdd">求商</button>
+        <script>
+            new Vue({
+                el:'#dpp',
+                data:{
+                    bhe:'',
+                    g:'',
+                    h:'',
+                },
+                methods:{
+                    cdd:function(){
+                        this.bhe=parseFloat(this.g)/parseFloat(this.h);
+                    }
+                }
+            })
+        </script>
+        </div>
+</html>
