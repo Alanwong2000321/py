@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<style>
+table{
+    width: 100%;
+    border-collapse: collapse;
+}
+th{
+    height:50px;
+}
+table,td,th{
+    border: 1px solid black;
+}
+td{
+    height: 30px;
+}
+</style>
+</head>
+<body>
+<div id="app">
+    <table>
+        <tr>
+            <th>序号</th>
+            <th>商品名称</th>
+            <th>商品价格</th>
+            <th>购买数量</th>
+            <th>操作</th>
+        </tr>
+        <tr v-for="sj in sp">
+            <td>{{ sj.xuhao }}</td>
+            <td>{{ sj.mingcheng }}</td>
+            <td>{{ sj.jiage }}</td>
+            <td style="color: red">
+                <button @click="sj.shuliang--" :disabled="sj.shuliang===0">-</button>
+                {{ sj.shuliang }}
+                <button @click="sj.shuliang++">+</button>
+            </td>
+            <td><button @click="sj.shuliang=0">移除</button></td>
+        </tr>
+    </table>
+    <p style="text-align: center;">
+    总价：
+    <span style="color: red">{{ zongjia() }}</span>
+    元
+    </p>
+    <p style="text-align: center"><button @click="qingkong">清空购物车</button></p>
+</div>
+<script>
+new Vue({
+    el:'#app',
+    data:{
+        sp:[{
+            xuhao:1,
+            mingcheng:'华为nova4',
+            jiage:3099,
+            shuliang:0
+        },
+        {
+            xuhao:2,
+            mingcheng:'华为P30',
+            jiage:3988,
+            shuliang:0
+        },
+        {
+            xuhao:3,
+            mingcheng:'华为Mate20',
+            jiage:4499,
+            shuliang:0
+        }]
+    },
+    methods:{
+        zongjia:function(){
+            let zongjia1=0;
+            for(let i=0;i<(this.sp).length;i++){
+                zongjia1+=this.sp[i].jiage*this.sp[i].shuliang;
+            }return zongjia1;
+        },
+        qingkong:function(){
+            for(let i=0;i<(this.sp).length;i++){
+                this.sp[i].shuliang=0;
+            }
+        }
+    }
+})
+</script>
+</body>
+
+</html>
