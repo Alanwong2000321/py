@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+<title>BMI计算</title>
+<style>
+.class1{
+    color: red;
+}
+#app1{
+    text-align: center;
+}
+</style>
+</head>
+<body>
+<div id="app1">
+    <p>身高</p>
+    <input v-model="sg"><span>单位：m</span>
+    <p>体重</p>
+    <input v-model="tz"><span>单位：kg</span><br>
+    <button @click='run' style="margin:10px;">计算BMI</button>
+    <p class="class1">BMI为：{{ bmi }}</p>
+    <img src="http://img.mp.itc.cn/upload/20160504/9cc0a7f96e964abb8ce9aae8f219907c_th.jpg">
+</div>
+<script>
+new Vue({
+    el:'#app1',
+    data:{
+        sg:'',
+        tz:'',
+        bmi:'0',
+    },
+    methods:{
+        run:function(){
+            let b;
+            b=parseFloat(this.tz)/(parseFloat(this.sg)*parseFloat(this.sg));
+            this.bmi=b.toFixed(2);
+        }
+    }
+})
+</script>
+
+
+
+</body>
+</html>
