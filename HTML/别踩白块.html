@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>别踩白块儿~</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .box {
+            width: 400px;
+            height: 520px;
+            background-color: #8af3ff;
+            margin: 40px auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .begin {
+            width: 400px;
+            height: 520px;
+            position: absolute;
+            z-index: 666;
+            font: 900 50px/520px "STSong";
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+        }
+
+        .begin span {
+            line-height: 520px;
+            cursor: pointer;
+        }
+
+        .scroll {
+            width: 400px;
+            height: 130px;
+            /*background-color: #900b09;*/
+            position: absolute;
+            top: -130px;
+        }
+
+        .scroll ul {
+            width: 400px;
+        }
+
+        .scroll ul li {
+            float: left;
+            width: 98px;
+            height: 128px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <div class="scroll">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="begin">
+      <span>开始了喂</span>
+    </div>
+</div>
+</body>
+<script>
+    // 获取需要用到的标签
+    var box = document.querySelector('.box');
+    var begin = document.querySelector('.begin');
+    var scroll = document.querySelector('.scroll');
+
+    var timer = null;
+    // 绑定事件
+    begin.onclick = function () {
+        this.style.display = 'none';
+        box.style.border = '1px solid black';
+        box.style.backgroundColor = 'white';
+        // 清除上次游戏残留行
+        scroll.innerHTML = "";
+        // 游戏开始
+        beginGame()
+    };
+
+    // 开始游戏
+    function beginGame() {
+        // 速度
+        var speed = 5;
+        // 得分
+        var score = 0;
+        // 设置定时器
+        timer = setInterval(function () {
+            // 假装是向下滚动
+            scroll.style.top = scroll.offsetTop + speed + 'px';
+            // 滚动一整行则创建新行
+            if (scroll.offsetTop >= 0) {
+                createNewRow();
+                scroll.style.top = '-130px';
+            }
+            // 绑定事件target
+            scroll.onclick = function (ev) {
+                var target = ev.target;
+                if (target.className == 'tag') {
+                    target.style.backgroundColor = "#bbb";
+                    target.className = '';
+                    score++;
+                } else {
+                    scroll.style.top = 0;
+                    begin.innerHTML = '得分: ' + score;
+                    clearInterval(timer);
+                    begin.style.display = "block";
+                }
+            }
+            // 删除第一行
+            if (scroll.children.length == 6) {
+                for (var i = 0; i < 4; i++) {
+                    if (scroll.children[scroll.children.length - 1].children[i].className == 'tag') {
+                        scroll.style.top = '-130px';
+                        begin.innerHTML = '得分: ' + score;
+                        clearInterval(timer);
+                        begin.style.display = "block";
+                    }
+                }
+                scroll.removeChild(scroll.children[scroll.children.length - 1]);
+            }
+        }, 20)
+    }
+
+
+    // 产生新行
+    function createNewRow() {
+        var row = document.createElement('ul');
+        var index = randomNum(0, 3);
+        for (let i = 0; i < 4; i++) {
+            var li = document.createElement('li');
+            row.appendChild(li);
+        }
+
+        if (scroll.children.length == 0) {
+            scroll.appendChild(row)
+        } else {
+            scroll.insertBefore(row, scroll.children[0])
+        }
+
+        row.children[index].style.backgroundColor = 'green';         
+        row.children[index].className = "tag";
+    }
+
+    // 产生随机数函数
+    function randomNum(m, n) {
+        return parseInt(Math.random() * (n - m + 1)) + m;
+    }
+
+</script>
+</html>  
+
