@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h3>{{ msg }}</h3> 
+        <input type="button" value="开始" @click='move'>
+        <input type="button" value="停止" @click='stop'>
+    </div>
+    <script>
+       
+            
+          
+        var vm = new Vue(
+
+            {
+                el: '#app',
+                data:{
+                    msg: '让你的字动起来吧！',
+                    intervalId:null 
+                },
+                methods: {
+                    move(){ 
+                        
+                        if(this.intervalId) return; 
+                        this.intervalId =  setInterval(() => {         
+                            var start = this.msg.substring(0, 1)
+                            var end = this.msg.substring(1)
+                            this.msg = end + start;
+                        }, 250)
+                    },
+                    stop(){
+                        clearInterval(this.intervalId)
+                        this.intervalId = null 
+                    }
+                    
+                },
+            }
+        )
+    </script>
+</body>
+</html>
