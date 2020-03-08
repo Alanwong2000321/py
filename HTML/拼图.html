@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
+	<title>拼图小游戏</title>
+</head>
+<body>
+	<div id="app">
+		<transition-group tag='div' name="cell" class='cells' >
+		  <div v-for='i, idx in items' :class="i!=' '?'cell':'cexx'" :key='i' @click.prevent="on(idx)">{{i}}</div>
+		</transition-group>
+		 <button @click='shuffle'>重置</button>
+	 </div>
+</body>
+<script>
+	new Vue({
+		el:"#app",
+		data:{
+			items:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,' ']
+		},
+		methods:{
+			shuffle(){
+      			this.items = _.shuffle(this.items);
+    		},
+			on(i){
+				var n=[1,-1,4,-4]
+				for(var j of n){
+					if(this.items[j+i]===' '){
+						this.$set(this.items,this.items.indexOf(' '),this.items[i])
+						this.$set(this.items,i,' ')
+						break
+					}
+				}
+				this.op()
+			},
+			op(){
+				var arr=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,' ']
+				var ipss=true
+				for(var i=0;i<16;i++){
+					if(this.items[i]!=arr[i]){
+						ipss=false
+						break
+					}
+				}
+				if(ipss){
+					alert(6666666666)
+				}
+			}
+		}
+	})
+</script>
+<style>
+.cells {
+  width: 410px;
+  background: #efefef  ;
+  display: flex;
+  flex-wrap: wrap;
+}
+.cell {
+  width: 100px;
+  height: 100px;
+  margin: 1px;
+  background-color:#4db149;
+  text-align: center;
+  line-height: 100px;
+}
+.cexx {
+  width: 100px;
+  height: 100px;
+  background: rgb(255, 255, 255);
+  line-height: 100px;
+}
+.cell-move {
+    transition: transform .5s;
+}
+</style>
+</html>
